@@ -1,0 +1,39 @@
+{
+  "_format": "hh3-sol-build-info-1",
+  "id": "solc-0_8_28-5880c6a5d4abcaf3184443d6b935f5c39e3c61db",
+  "solcVersion": "0.8.28",
+  "solcLongVersion": "0.8.28+commit.7893614a",
+  "userSourceNameMap": {
+    "contracts/SimpleStorage.sol": "project/contracts/SimpleStorage.sol"
+  },
+  "input": {
+    "language": "Solidity",
+    "settings": {
+      "evmVersion": "cancun",
+      "optimizer": {
+        "enabled": true,
+        "runs": 200
+      },
+      "outputSelection": {
+        "*": {
+          "": [
+            "ast"
+          ],
+          "*": [
+            "abi",
+            "evm.bytecode",
+            "evm.deployedBytecode",
+            "evm.methodIdentifiers",
+            "metadata"
+          ]
+        }
+      },
+      "remappings": []
+    },
+    "sources": {
+      "project/contracts/SimpleStorage.sol": {
+        "content": "// SPDX-License-Identifier: MIT\r\npragma solidity ^0.8.24;\r\n\r\n/**\r\n * @title  SimpleStorage\r\n * @notice Store and retrieve a uint256 value on the CDK L2 chain.\r\n *         Intentionally minimal — one contract, two functions, one event.\r\n *         Perfect for verifying a new chain is alive and accepting txs.\r\n */\r\ncontract SimpleStorage {\r\n    uint256 public value;\r\n    address public lastSetter;\r\n\r\n    event ValueSet(address indexed by, uint256 newValue, uint256 blockNumber);\r\n\r\n    constructor(uint256 _initial) {\r\n        value = _initial;\r\n        lastSetter = msg.sender;\r\n    }\r\n\r\n    /// @notice Store a new value\r\n    function set(uint256 _value) external {\r\n        value = _value;\r\n        lastSetter = msg.sender;\r\n        emit ValueSet(msg.sender, _value, block.number);\r\n    }\r\n\r\n    /// @notice Return the current value (explicit getter for clarity)\r\n    function get() external view returns (uint256) {\r\n        return value;\r\n    }\r\n}\r\n"
+      }
+    }
+  }
+}

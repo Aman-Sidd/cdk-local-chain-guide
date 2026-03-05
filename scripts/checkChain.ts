@@ -9,21 +9,21 @@ const __dirname  = path.dirname(__filename);
 
 // ── Kurtosis services to probe ────────────────────────────────────────────────
 const SERVICES: { name: string; url: string; type: "evm" | "http" }[] = [
-  { name: "L1  el-1-geth",           url: "http://127.0.0.1:57872", type: "evm"  },
-  { name: "L2  op-el-1 (primary)",   url: "http://127.0.0.1:50422", type: "evm"  },
-  { name: "L2  op-el-2 (secondary)", url: "http://127.0.0.1:50689", type: "evm"  },
-  { name: "L2  op-cl-1 (op-node)",   url: "http://127.0.0.1:50629", type: "http" },
-  { name: "L2  op-cl-2 (op-node)",   url: "http://127.0.0.1:56982", type: "http" },
-  { name: "AggLayer readRPC",         url: "http://127.0.0.1:52205", type: "http" },
-  { name: "AggLayer admin",           url: "http://127.0.0.1:52206", type: "http" },
-  { name: "AggLayer dashboard",       url: "http://127.0.0.1:52449", type: "http" },
-  { name: "aggkit-001 RPC",           url: "http://127.0.0.1:60755", type: "http" },
-  { name: "aggkit-bridge REST",       url: "http://127.0.0.1:60825", type: "http" },
-  { name: "bridge-service RPC",       url: "http://127.0.0.1:60952", type: "http" },
-  { name: "op-batcher",               url: "http://127.0.0.1:58456", type: "http" },
-  { name: "op-proposer",              url: "http://127.0.0.1:58646", type: "http" },
-  { name: "proxyd",                   url: "http://127.0.0.1:58703", type: "evm"  },
-  { name: "contracts-001",            url: "http://127.0.0.1:50686", type: "http" },
+  { name: "L1  el-1-geth",           url: "http://127.0.0.1:56140", type: "evm"  },
+  { name: "L2  op-el-1 (primary)",   url: "http://127.0.0.1:53094", type: "evm"  },
+  { name: "L2  op-el-2 (secondary)", url: "http://127.0.0.1:53610", type: "evm"  },
+  { name: "L2  op-cl-1 (op-node)",   url: "http://127.0.0.1:53595", type: "http" },
+  { name: "L2  op-cl-2 (op-node)",   url: "http://127.0.0.1:53837", type: "http" },
+  { name: "AggLayer readRPC",         url: "http://127.0.0.1:50718", type: "http" },
+  { name: "AggLayer admin",           url: "http://127.0.0.1:50721", type: "http" },
+  { name: "AggLayer dashboard",       url: "http://127.0.0.1:62637", type: "http" },
+  { name: "aggkit-001 RPC",           url: "http://127.0.0.1:51220", type: "http" },
+  { name: "aggkit-bridge REST",       url: "http://127.0.0.1:51274", type: "http" },
+  { name: "bridge-service RPC",       url: "http://127.0.0.1:51334", type: "http" },
+  { name: "op-batcher",               url: "http://127.0.0.1:65253", type: "http" },
+  { name: "op-proposer",              url: "http://127.0.0.1:65334", type: "http" },
+  { name: "proxyd",                   url: "http://127.0.0.1:65384", type: "evm"  },
+  { name: "contracts-001",            url: "http://127.0.0.1:56898", type: "http" },
 ];
 
 // ── ANSI helpers ──────────────────────────────────────────────────────────────
@@ -59,11 +59,7 @@ async function probeHttp(url: string) {
   }
 }
 
-function loadDeployedAddress(chainId: string): string | null {[
-
-
-    
-]
+function loadDeployedAddress(chainId: string): string | null {
   const p = path.join(
     __dirname, "..", "ignition", "deployments",
     `chain-${chainId}`, "deployed_addresses.json"
@@ -106,23 +102,7 @@ async function main() {
   console.log(`  ${"Balance".padEnd(PAD)} ${formatEther(balance)} ETH`);
   console.log(`  ${"Nonce".padEnd(PAD)} ${nonce}`);
 
-  // ── Service probe ─────────────────────────────────────────────────
-  console.log(`\n${bold("▸ Service status")}`);
-  console.log(gray(`  ${"Service".padEnd(PAD)} ${"Status".padEnd(8)} Info`));
-  console.log(gray(`  ${LINE}`));
 
-  for (const svc of SERVICES) {
-    const result = svc.type === "evm" ? await probeEvm(svc.url) : await probeHttp(svc.url);
-
-    if (result.up) {
-      const info = svc.type === "evm"
-        ? `chainId=${(result as any).chainId}  block=${(result as any).block}`
-        : `HTTP ${(result as any).status ?? "—"}`;
-      console.log(`  ${svc.name.padEnd(PAD)} ${ok}  ${gray(info)}`);
-    } else {
-      console.log(`  ${svc.name.padEnd(PAD)} ${fail}  ${gray((result as any).error ?? "unreachable")}`);
-    }
-  }
 
   // ── SimpleStorage contract ────────────────────────────────────────
   console.log(`\n${bold("▸ SimpleStorage contract")}`);
@@ -144,7 +124,7 @@ async function main() {
       console.log(`  ${"Last setter".padEnd(PAD)} ${setter}`);
 
       console.log(`\n  ${bold("→ Sending test tx: set(999)...")}`);
-      const tx      = await contract.set(999n);
+      const tx      = await contract.set(48n);
       const receipt = await tx.wait();
       const updated = await contract.get();
 
