@@ -4,10 +4,10 @@ pragma solidity ^0.8.20;
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
-contract MyGasToken is ERC20, Ownable {
+contract MyCustomToken is ERC20, Ownable {
     constructor(
         address initialOwner
-    ) ERC20("My Gas Token", "MGT") Ownable(initialOwner) {
+    ) ERC20("My Custom Gas Token", "MCT") Ownable(initialOwner) {
         // Mint initial supply to deployer
         _mint(msg.sender, 1_000_000_000 * 10 ** decimals());
     }
